@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens ─────────────────────────────────────────────────────────
+   Chrome & ink follow the validated data-viz reference palette so that the
+   workbench shell and the charts inside it read as one system.            */
+:root {
+  color-scheme: light;
+
+  --plane:          #f9f9f7;  /* page plane            */
+  --surface-1:      #fcfcfb;  /* card / chart surface  */
+  --surface-2:      #ffffff;  /* raised surface        */
+  --text-primary:   #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted:     #898781;
+  --line:           #e1e0d9;
+  --baseline:       #c3c2b7;
+
+  /* categorical slots, in fixed order — never cycled */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+
+  /* sequential blue ramp (ordinal use starts at step 250) */
+  --seq-250: #86b6ef;
+  --seq-350: #5598e7;
+  --seq-450: #2a78d6;
+  --seq-550: #1c5cab;
+  --seq-650: #104281;
+
+  /* status — fixed, never themed, always paired with icon + label */
+  --status-good:     #0ca30c;
+  --status-warning:  #fab219;
+  --status-serious:  #ec835a;
+  --status-critical: #d03b3b;
+
+  --ring: rgba(11, 11, 11, 0.10);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme='light'])) {
+    color-scheme: dark;
+    --plane:          #0d0d0d;
+    --surface-1:      #1a1a19;
+    --surface-2:      #212120;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --line:           #2c2c2a;
+    --baseline:       #383835;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #008300;
+    --series-7: #9085e9;
+    --series-8: #e66767;
+    --seq-250: #184f95;
+    --seq-350: #256abf;
+    --seq-450: #3987e5;
+    --seq-550: #5598e7;
+    --seq-650: #86b6ef;
+    --ring: rgba(255, 255, 255, 0.10);
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --plane:          #0d0d0d;
+  --surface-1:      #1a1a19;
+  --surface-2:      #212120;
+  --text-primary:   #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted:     #898781;
+  --line:           #2c2c2a;
+  --baseline:       #383835;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --series-5: #d55181;
+  --series-6: #008300;
+  --series-7: #9085e9;
+  --series-8: #e66767;
+  --seq-250: #184f95;
+  --seq-350: #256abf;
+  --seq-450: #3987e5;
+  --seq-550: #5598e7;
+  --seq-650: #86b6ef;
+  --ring: rgba(255, 255, 255, 0.10);
+}
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--plane);
+  color: var(--text-primary);
+  font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border bg-surface;
+    border-color: var(--line);
+  }
+  .hairline { border-color: var(--line); }
+  .focus-ring {
+    @apply outline-none ring-offset-0 focus-visible:ring-2;
+    --tw-ring-color: var(--series-1);
+  }
+  .input {
+    @apply w-full rounded-xl border bg-raised px-3 py-2 text-sm text-ink
+           placeholder:text-muted focus-ring;
+    border-color: var(--line);
+  }
+  .tabular { font-variant-numeric: tabular-nums; }
+}
+
+/* Scrollbars stay recessive so the data keeps the contrast budget. */
+* { scrollbar-width: thin; scrollbar-color: var(--baseline) transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb {
+  background: var(--baseline);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+
+@keyframes pulse-soft { 0%, 100% { opacity: 1 } 50% { opacity: .45 } }
+.animate-pulse-soft { animation: pulse-soft 1.4s ease-in-out infinite; }
